@@ -27,28 +27,22 @@ class _singupState extends State<singup> {
               Spacer(
                 flex: 4,
               ),
-              Card(
-                child: customtextfield1(
-                  label: "Username",
-                  icon: Icon(Icons.person),
-                ),
+              customtextfield1(
+                label: "Username",
+                icon: Icon(Icons.person),
               ),
-              Card(
-                child: customtextfield1(
-                  label: "Email",
-                  icon: Icon(Icons.email),
-                ),
+              customtextfield1(
+                label: "Email",
+                icon: Icon(Icons.email),
               ),
-              Card(
-                  child: customtext2(
+              customtext2(
                 label: "Password",
                 isenable: isenabele,
-              )),
-              Card(
-                  child: customtext2(
+              ),
+              customtext2(
                 label: "Confirm Password",
                 isenable: isenabele,
-              )),
+              ),
               Spacer(
                 flex: 2,
               ),
@@ -119,22 +113,25 @@ class customtextfield1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      style: TextStyle(color: Color(0xFF4762FD)),
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: icon,
-        filled: true,
-        fillColor: Color.fromARGB(255, 239, 240, 244),
-        disabledBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(width: 0, color: Colors.white)),
-        enabledBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(width: 0, color: Colors.white)),
-        focusedBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(width: 0, color: Colors.white)),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10),
+      child: TextFormField(
+        style: TextStyle(color: Color(0xFF4762FD)),
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: icon,
+          filled: true,
+          fillColor: Color.fromARGB(255, 239, 240, 244),
+          disabledBorder: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.white)),
+          enabledBorder: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.white)),
+          focusedBorder: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.white)),
+        ),
       ),
     );
   }
@@ -153,8 +150,8 @@ class customtext2 extends StatefulWidget {
 class _customtext2State extends State<customtext2> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10),
       child: TextFormField(
         style: TextStyle(color: Color(0xFF4762FD)),
         obscureText: widget.isenable == true ? false : true,
