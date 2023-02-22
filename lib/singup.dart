@@ -45,16 +45,15 @@ class _singupState extends State<singup> {
                   // mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Spacer(
-                    //   flex: 4,
-                    // ),
-                    customtextfield1(
-                      label: "Username",
-                      icon: Icon(Icons.person),
-                    ),
                     customtextfield1(
                       label: "Email",
                       icon: Icon(Icons.email),
+                      inputtype: TextInputType.emailAddress,
+                    ),
+                    customtextfield1(
+                      label: "Phone",
+                      icon: Icon(Icons.phone),
+                      inputtype: TextInputType.phone,
                     ),
                     customtext2(
                       label: "Password",
@@ -130,13 +129,15 @@ class customButon extends StatelessWidget {
 class customtextfield1 extends StatelessWidget {
   String? label;
   Icon? icon;
-  customtextfield1({this.label, this.icon});
+  TextInputType? inputtype;
+  customtextfield1({this.label, this.icon, this.inputtype});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: TextFormField(
+        keyboardType: inputtype,
         style: TextStyle(color: Color(0xFF4762FD)),
         decoration: InputDecoration(
           labelText: label,
