@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class singup extends StatefulWidget {
@@ -19,52 +17,75 @@ class _singupState extends State<singup> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Form(
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 25),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Spacer(
-                flex: 4,
+        child: ListView(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  height: 250,
+                  width: double.infinity,
+                  child: CustomPaint(
+                    painter: curvePainter(),
+                  ),
+                ),
+                Text(
+                  "Login",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 25),
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Spacer(
+                    //   flex: 4,
+                    // ),
+                    customtextfield1(
+                      label: "Username",
+                      icon: Icon(Icons.person),
+                    ),
+                    customtextfield1(
+                      label: "Email",
+                      icon: Icon(Icons.email),
+                    ),
+                    customtext2(
+                      label: "Password",
+                      isenable: isenabele,
+                    ),
+                    customtext2(
+                      label: "Confirm Password",
+                      isenable: isenabele,
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    customButon(
+                      color: Color(0xFF4762FD),
+                      txt: "Login",
+                      circular: 9,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    customButon(
+                      txt: "Sign Up",
+                      circular: 9,
+                      borderColor: Color(0xFF4762FD),
+                      txtColor: Color(0xFF4762FD),
+                    ),
+                  ],
+                ),
               ),
-              customtextfield1(
-                label: "Username",
-                icon: Icon(Icons.person),
-              ),
-              customtextfield1(
-                label: "Email",
-                icon: Icon(Icons.email),
-              ),
-              customtext2(
-                label: "Password",
-                isenable: isenabele,
-              ),
-              customtext2(
-                label: "Confirm Password",
-                isenable: isenabele,
-              ),
-              Spacer(
-                flex: 2,
-              ),
-              customButon(
-                color: Color(0xFF4762FD),
-                txt: "Login",
-                circular: 9,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              customButon(
-                txt: "Sign Up",
-                circular: 9,
-                borderColor: Color(0xFF4762FD),
-                txtColor: Color(0xFF4762FD),
-              ),
-              Spacer(
-                flex: 1,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -180,5 +201,33 @@ class _customtext2State extends State<customtext2> {
                     : Icon(Icons.visibility_off))),
       ),
     );
+  }
+}
+
+class curvePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    ////////////////
+    var paint = Paint();
+    paint.color = Color(0xFF4762FD);
+    paint.style = PaintingStyle.fill;
+    // paint.strokeWidth = 2.0;
+    ///////////
+    var path = Path();
+
+    path.moveTo(0, size.height * 0.8);
+    path.quadraticBezierTo(size.width * 0.1, size.height * 0.75,
+        size.width * 0.3, size.height * 0.8);
+
+    path.quadraticBezierTo(size.width * 0.7, size.height * 0.97,
+        size.width * 1.0, size.height * 0.8);
+    path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
