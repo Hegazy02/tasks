@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class singup extends StatefulWidget {
   const singup({super.key});
@@ -8,86 +9,96 @@ class singup extends StatefulWidget {
 }
 
 class _singupState extends State<singup> {
-  bool isenabele = false;
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Form(
-        child: ListView(
-          children: [
-            Stack(
-              alignment: Alignment.center,
+    return ChangeNotifierProvider(
+        create: (context) => testProvider(),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: Form(
+            child: ListView(
               children: [
-                Container(
-                  height: 250,
-                  width: double.infinity,
-                  child: CustomPaint(
-                    painter: curvePainter(),
-                  ),
-                ),
-                Text(
-                  "Login",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 25),
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
+                Stack(
+                  alignment: Alignment.center,
                   children: [
-                    customtextfield1(
-                      label: "Email",
-                      icon: Icon(Icons.email),
-                      inputtype: TextInputType.emailAddress,
+                    Container(
+                      height: 250,
+                      width: double.infinity,
+                      child: CustomPaint(
+                        painter: curvePainter(),
+                      ),
                     ),
-                    customtextfield1(
-                      label: "Phone",
-                      icon: Icon(Icons.phone),
-                      inputtype: TextInputType.phone,
-                    ),
-                    customtext2(
-                      label: "Password",
-                      isenable: isenabele,
-                    ),
-                    customtext2(
-                      label: "Confirm Password",
-                      isenable: isenabele,
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    customButon(
-                      color: Color(0xFF4762FD),
-                      txt: "Login",
-                      circular: 9,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    customButon(
-                      txt: "Sign Up",
-                      circular: 9,
-                      borderColor: Color(0xFF4762FD),
-                      txtColor: Color(0xFF4762FD),
+                    Text(
+                      "Login",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-              ),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 25),
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        customtextfield1(
+                          label: "Email",
+                          icon: Icon(Icons.email),
+                          inputtype: TextInputType.emailAddress,
+                        ),
+                        customtextfield1(
+                          label: "Phone",
+                          icon: Icon(Icons.phone),
+                          inputtype: TextInputType.phone,
+                        ),
+                        Consumer<testProvider>(
+                          builder: (context, value, child) {
+                            return customtext2(
+                              label: "Password",
+                              isenable: value.isenabele,
+                              change: value.changemood,
+                            );
+                          },
+                        ),
+                        Consumer<testProvider>(
+                          builder: (context, value, child) {
+                            return customtext2(
+                              label: "Confirm Password",
+                              isenable: value.isenabele,
+                              change: value.changemood,
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        customButon(
+                          color: Color(0xFF4762FD),
+                          txt: "Login",
+                          circular: 9,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        customButon(
+                          txt: "Sign Up",
+                          circular: 9,
+                          borderColor: Color(0xFF4762FD),
+                          txtColor: Color(0xFF4762FD),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }
 
@@ -163,7 +174,8 @@ class customtext2 extends StatefulWidget {
   String? label;
   bool? isenable;
   Icon? icon;
-  customtext2({this.label, this.icon, this.isenable});
+  Function? change;
+  customtext2({this.label, this.icon, this.isenable, this.change});
 
   @override
   State<customtext2> createState() => _customtext2State();
@@ -193,9 +205,7 @@ class _customtext2State extends State<customtext2> {
             ),
             suffixIcon: IconButton(
                 onPressed: () {
-                  setState(() {
-                    widget.isenable = !widget.isenable!;
-                  });
+                  widget.change!();
                 },
                 icon: widget.isenable == false
                     ? Icon(Icons.visibility)
@@ -230,5 +240,13 @@ class curvePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class testProvider extends ChangeNotifier {
+  bool isenabele = false;
+  changemood() {
+    isenabele = !isenabele;
+    notifyListeners();
   }
 }
