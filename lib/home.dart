@@ -78,7 +78,7 @@ Widget slidIt(BuildContext context, int index, Animation<double> animation,
             icon: Icon(Icons.delete)),
         tileColor: press == false
             ? Colors.primaries[index % Colors.primaries.length]
-            : Colors.red,
+            : Color.fromARGB(255, 219, 27, 20),
       ),
     ),
   );
