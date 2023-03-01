@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class singup extends StatefulWidget {
-  const singup({super.key});
-
-  @override
-  State<singup> createState() => _singupState();
-}
-
-class _singupState extends State<singup> {
+class singup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -19,6 +12,7 @@ class _singupState extends State<singup> {
           backgroundColor: Colors.white,
           body: Form(
             child: ListView(
+              shrinkWrap: true,
               children: [
                 Stack(
                   alignment: Alignment.center,
@@ -34,67 +28,81 @@ class _singupState extends State<singup> {
                       "Login",
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 22,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 25),
-                    child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        customtextfield1(
-                          label: "Email",
-                          icon: Icon(Icons.email),
-                          inputtype: TextInputType.emailAddress,
-                        ),
-                        customtextfield1(
-                          label: "Phone",
-                          icon: Icon(Icons.phone),
-                          inputtype: TextInputType.phone,
-                        ),
-                        Consumer<testProvider>(
-                          builder: (context, value, child) {
-                            return customtext2(
-                              label: "Password",
-                              isenable: value.isenabele,
-                              change: value.changemood,
-                            );
-                          },
-                        ),
-                        Consumer<testProvider>(
-                          builder: (context, value, child) {
-                            return customtext2(
-                              label: "Confirm Password",
-                              isenable: value.isenabele,
-                              change: value.changemood,
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        customButon(
-                          color: Color(0xFF4762FD),
-                          txt: "Login",
-                          circular: 9,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        customButon(
-                          txt: "Sign Up",
-                          circular: 9,
-                          borderColor: Color(0xFF4762FD),
-                          txtColor: Color(0xFF4762FD),
-                        ),
-                      ],
-                    ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    children: [
+                      customtextfield1(
+                        label: "Email",
+                        icon: Icon(Icons.email),
+                        inputtype: TextInputType.emailAddress,
+                      ),
+                      customtextfield1(
+                        label: "Phone",
+                        icon: Icon(Icons.phone),
+                        inputtype: TextInputType.phone,
+                      ),
+                      Selector<testProvider, bool>(
+                        selector: (context, p1) => p1.isenabele,
+                        builder: (context, value, child) {
+                          return customtext2(
+                            label: "Password",
+                            isenable: value,
+                          );
+                        },
+                      ),
+                      Selector<testProvider, bool>(
+                        selector: (context, p1) => p1.isenabele2,
+                        builder: (context, value, child) {
+                          return customtext2(
+                            label: "Confirm Password",
+                            isenable: value,
+                          );
+                        },
+                      ),
+                      // Consumer<testProvider>(
+                      //   builder: (context, value, child) {
+                      //     return customtext2(
+                      //       label: "Confirm Password",
+                      //       isenable: value.isenabele,
+                      //       change: value.changemood2,
+                      //     );
+                      //   },
+                      // ),
+                      // Consumer<testProvider>(
+                      //   builder: (context, value, child) {
+                      //     print('!!!!!!!!!!!!!!!!!!!');
+                      //     return Text(value.ins!);
+                      //   },
+                      // ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      customButon(
+                        color: Color(0xFF4762FD),
+                        txt: "Login",
+                        circular: 9,
+                        onPressed: () {},
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      customButon(
+                        txt: "Sign Up",
+                        circular: 9,
+                        borderColor: Color(0xFF4762FD),
+                        txtColor: Color(0xFF4762FD),
+                        onPressed: () =>
+                            Navigator.of(context).pushNamed("home"),
+                      ),
+                    ],
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -108,8 +116,15 @@ class customButon extends StatelessWidget {
   Color? color;
   Color? borderColor;
   double? circular;
+  Function()? onPressed;
+
   customButon(
-      {this.color, this.txt, this.circular, this.borderColor, this.txtColor});
+      {this.color,
+      this.txt,
+      this.circular,
+      this.borderColor,
+      this.txtColor,
+      this.onPressed});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -121,7 +136,7 @@ class customButon extends StatelessWidget {
                     borderRadius: BorderRadius.circular(circular!)),
                 side: BorderSide(color: borderColor ?? Colors.white),
                 backgroundColor: color ?? Colors.white),
-            onPressed: () {},
+            onPressed: onPressed,
             child: Container(
               child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
@@ -175,6 +190,7 @@ class customtext2 extends StatefulWidget {
   bool? isenable;
   Icon? icon;
   Function? change;
+
   customtext2({this.label, this.icon, this.isenable, this.change});
 
   @override
@@ -184,32 +200,38 @@ class customtext2 extends StatefulWidget {
 class _customtext2State extends State<customtext2> {
   @override
   Widget build(BuildContext context) {
+    print("qqqqqqqqqqqq");
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: TextFormField(
         style: TextStyle(color: Color(0xFF4762FD)),
         obscureText: widget.isenable == true ? false : true,
         decoration: InputDecoration(
-            border: InputBorder.none,
-            filled: true,
-            fillColor: Color.fromARGB(255, 239, 240, 244),
-            enabledBorder: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(width: 0, color: Colors.white)),
-            focusedBorder: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(width: 0, color: Colors.white)),
-            labelText: widget.label,
-            prefixIcon: Icon(
-              Icons.lock,
-            ),
-            suffixIcon: IconButton(
-                onPressed: () {
-                  widget.change!();
-                },
-                icon: widget.isenable == false
-                    ? Icon(Icons.visibility)
-                    : Icon(Icons.visibility_off))),
+          border: InputBorder.none,
+          filled: true,
+          fillColor: Color.fromARGB(255, 239, 240, 244),
+          enabledBorder: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.white)),
+          focusedBorder: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(width: 0, color: Colors.white)),
+          labelText: widget.label,
+          prefixIcon: Icon(
+            Icons.lock,
+          ),
+          suffixIcon: Consumer<testProvider>(
+            builder: (context, value, child) {
+              return IconButton(
+                  onPressed: () {
+                    value.changemood();
+                  },
+                  icon: widget.isenable == false
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off));
+            },
+          ),
+        ),
       ),
     );
   }
@@ -245,8 +267,22 @@ class curvePainter extends CustomPainter {
 
 class testProvider extends ChangeNotifier {
   bool isenabele = false;
+  bool isenabele2 = false;
+  String? ins = 'www';
   changemood() {
     isenabele = !isenabele;
+    // ins = "haaah?";
     notifyListeners();
   }
+
+  changemood2() {
+    isenabele2 = !isenabele2;
+    // ins = "haaah?";
+    notifyListeners();
+  }
+
+  get val => ins;
 }
+// بنستخدم الكنسيومر للوديجت الي هتعمل التغيير (المسئولة عنو)
+//بنستخدم السيليكتور للويدجت الي هيبان فيها التغيير
+//السيليكتور مش هيعمل ريبيلد للويدجت تاني لو محصلش تغيير
