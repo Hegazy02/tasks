@@ -26,28 +26,37 @@ class _homePageState extends State<homePage> {
               icon: Icon(Icons.add))
         ],
       ),
-      body: AnimatedList(
-        key: animKey,
-        initialItemCount: sports.isNotEmpty ? sports.length : 0,
-        itemBuilder: (context, index, animation) {
-          return slidIt(context, index, animation, press: false);
-        },
+      body: AnimationLimiter(
+        child: AnimatedList(
+          key: animKey,
+          initialItemCount: sports.isNotEmpty ? sports.length : 0,
+          itemBuilder: (context, index, animation) {
+            return AnimationConfiguration.staggeredList(
+                position: index,
+                duration: const Duration(milliseconds: 375),
+                child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                        child:
+                            slidIt(context, index, animation, press: false))));
+          },
+        ),
       ),
     );
   }
 }
 
 List sports = [
-  // "One",
-  // "Two",
-  // "Three",
-  // "Four",
-  // "Five",
-  // "Six",
-  // "Seven",
-  // "Eight",
-  // "Nine",
-  // "Ten"
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",
+  "Ten"
 ];
 Widget slidIt(BuildContext context, int index, Animation<double> animation,
     {bool? press}) {
