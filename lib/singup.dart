@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class singup extends StatelessWidget {
+class singup extends StatefulWidget {
+  @override
+  State<singup> createState() => _singupState();
+}
+
+class _singupState extends State<singup> {
+  bool isSec = false;
+  bool isSec2 = false;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -47,33 +54,25 @@ class singup extends StatelessWidget {
                         icon: Icon(Icons.phone),
                         inputtype: TextInputType.phone,
                       ),
-                      Selector<testProvider, bool>(
-                        selector: (context, p1) => p1.isenabele,
-                        builder: (context, value, child) {
-                          return customtext2(
-                            label: "Password",
-                            isenable: value,
-                          );
+                      customtext2(
+                        label: "Password",
+                        isenable: isSec,
+                        onPressed: () {
+                          setState(() {
+                            isSec = !isSec;
+                          });
                         },
                       ),
-                      Selector<testProvider, bool>(
-                        selector: (context, p1) => p1.isenabele2,
-                        builder: (context, value, child) {
-                          return customtext2(
-                            label: "Confirm Password",
-                            isenable: value,
-                          );
+
+                      customtext2(
+                        label: "Confirm Password",
+                        isenable: isSec2,
+                        onPressed: () {
+                          setState(() {
+                            isSec2 = !isSec2;
+                          });
                         },
                       ),
-                      // Consumer<testProvider>(
-                      //   builder: (context, value, child) {
-                      //     return customtext2(
-                      //       label: "Confirm Password",
-                      //       isenable: value.isenabele,
-                      //       change: value.changemood2,
-                      //     );
-                      //   },
-                      // ),
                       // Consumer<testProvider>(
                       //   builder: (context, value, child) {
                       //     print('!!!!!!!!!!!!!!!!!!!');
@@ -98,7 +97,7 @@ class singup extends StatelessWidget {
                         borderColor: Color(0xFF4762FD),
                         txtColor: Color(0xFF4762FD),
                         onPressed: () =>
-                            Navigator.of(context).pushNamed("home"),
+                            Navigator.of(context).pushReplacementNamed("home"),
                       ),
                     ],
                   ),
@@ -189,9 +188,10 @@ class customtext2 extends StatefulWidget {
   String? label;
   bool? isenable;
   Icon? icon;
-  Function? change;
 
-  customtext2({this.label, this.icon, this.isenable, this.change});
+  Function()? onPressed;
+
+  customtext2({this.label, this.icon, this.isenable, this.onPressed});
 
   @override
   State<customtext2> createState() => _customtext2State();
@@ -223,9 +223,7 @@ class _customtext2State extends State<customtext2> {
           suffixIcon: Consumer<testProvider>(
             builder: (context, value, child) {
               return IconButton(
-                  onPressed: () {
-                    value.changemood();
-                  },
+                  onPressed: widget.onPressed,
                   icon: widget.isenable == false
                       ? Icon(Icons.visibility)
                       : Icon(Icons.visibility_off));
@@ -278,6 +276,7 @@ class testProvider extends ChangeNotifier {
   changemood2() {
     isenabele2 = !isenabele2;
     // ins = "haaah?";
+    print("object");
     notifyListeners();
   }
 

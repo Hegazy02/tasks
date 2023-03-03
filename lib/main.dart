@@ -18,8 +18,9 @@ class MyApp extends StatelessWidget {
         hintColor: Color(0xFF4762FD),
         primarySwatch: asd,
       ),
-      home: homePage(),
+      home: singup(),
       routes: {
+        "signUp": (context) => singup(),
         "home": (context) => homePage(),
       },
     );
