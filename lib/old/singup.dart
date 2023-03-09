@@ -9,6 +9,15 @@ class singup extends StatefulWidget {
 class _singupState extends State<singup> {
   bool isSec = false;
   bool isSec2 = false;
+  String? eval;
+  String eVali = r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+  GlobalKey<FormState> fKey = GlobalKey();
+  ValidateEmail() {
+    if (fKey.currentState!.validate()) {
+      Navigator.of(context).pushReplacementNamed("home");
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -18,6 +27,7 @@ class _singupState extends State<singup> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: Form(
+            key: fKey,
             child: ListView(
               shrinkWrap: true,
               children: [
@@ -48,6 +58,13 @@ class _singupState extends State<singup> {
                         label: "Email",
                         icon: Icon(Icons.email),
                         inputtype: TextInputType.emailAddress,
+                        validator: (p0) {
+                          if (RegExp(eVali).hasMatch(p0!)) {
+                            return null;
+                          } else {
+                            return "Invalid email";
+                          }
+                        },
                       ),
                       customtextfield1(
                         label: "Phone",
@@ -96,8 +113,7 @@ class _singupState extends State<singup> {
                         circular: 9,
                         borderColor: Color(0xFF4762FD),
                         txtColor: Color(0xFF4762FD),
-                        onPressed: () =>
-                            Navigator.of(context).pushReplacementNamed("home"),
+                        onPressed: () => ValidateEmail(),
                       ),
                     ],
                   ),
@@ -155,7 +171,9 @@ class customtextfield1 extends StatelessWidget {
   String? label;
   Icon? icon;
   TextInputType? inputtype;
-  customtextfield1({this.label, this.icon, this.inputtype});
+
+  String? Function(String?)? validator;
+  customtextfield1({this.label, this.icon, this.inputtype, this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +181,7 @@ class customtextfield1 extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 10),
       child: TextFormField(
         keyboardType: inputtype,
+        validator: validator,
         style: TextStyle(color: Color(0xFF4762FD)),
         decoration: InputDecoration(
           labelText: label,

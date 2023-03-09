@@ -1,6 +1,8 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:tasks/home.dart';
-import 'package:tasks/singup.dart';
+import 'package:tasks/new/home2.dart';
+import 'package:tasks/old/home.dart';
+import 'package:tasks/old/singup.dart';
 
 void main(List<String> args) {
   runApp(MyApp());
@@ -18,7 +20,12 @@ class MyApp extends StatelessWidget {
         hintColor: Color(0xFF4762FD),
         primarySwatch: asd,
       ),
-      home: singup(),
+      home: AnimatedSplashScreen(
+          duration: 3000,
+          splash: "assets/images/opening.png",
+          nextScreen: home2(),
+          splashTransition: SplashTransition.fadeTransition,
+          backgroundColor: Colors.white),
       routes: {
         "signUp": (context) => singup(),
         "home": (context) => homePage(),
